@@ -9,15 +9,14 @@ import fetchPlants from "../services/plants";
 
 export const Route = createFileRoute("/")({
   component: HomeComponent,
+  loader: async () => {
+    return fetchPlants() as Promise<string[]>;
+  },
 });
 
 function HomeComponent() {
   const navigate = useNavigate();
-  const [items, setItems] = useState<string[]>([]);
-
-  useEffect(() => {
-    fetchPlants().then((items) => setItems(items));
-  }, []);
+  const items = Route.useLoaderData();
 
   return (
     <calcite-list label="Power Plants" scale="l" selectionMode="single">
